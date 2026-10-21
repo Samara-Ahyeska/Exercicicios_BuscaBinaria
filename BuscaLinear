@@ -3,71 +3,61 @@
 
 using namespace std;
 
-// Busca binária iterativa
+// Função auxiliar para imprimir visualmente os elementos do intervalo atual
+void imprimeIntervalo(const vector<int>& arr, int inicio, int fim) {
+    cout << "Intervalo ativo: [ ";
+    for (int i = inicio; i <= fim; i++) {
+        cout << arr[i] << " ";
+    }
+    cout << "]" << endl;
+}
+
+// Busca Binária Iterativa com exibição detalhada dos intervalos
 int buscaBinariaIterativa(const vector<int>& arr, int alvo) {
     int inicio = 0;
-    int fim = static_cast<int>(arr.size()) - 1;
+    int fim = arr.size() - 1;
+    int passo = 1;
 
     while (inicio <= fim) {
-        int meio = inicio + (fim - inicio) / 2; // Evita overflow
+        cout << "\n----------------------------------------\n";
+        cout << "Passo " << passo++ << ":" << endl;
+        
+        // Mostra o trecho do vetor que ainda está sendo analisado
+        imprimeIntervalo(arr, inicio, fim);
+        
+        int meio = inicio + (fim - inicio) / 2;
+        cout << "Indices -> inicio: " << inicio << ", fim: " << fim << " | Meio: indice " << meio << " (Valor: " << arr[meio] << ")" << endl;
 
+        // Compara o elemento do meio com o alvo
         if (arr[meio] == alvo) {
+            cout << ">> Encontrado! O valor " << alvo << " esta no indice " << meio << "." << endl;
             return meio;
-        } else if (arr[meio] < alvo) {
-            inicio = meio + 1; // Descarta metade esquerda
-        } else {
-            fim = meio - 1;    // Descarta metade direita
+        } 
+        else if (arr[meio] < alvo) {
+            cout << ">> " << arr[meio] << " e menor que " << alvo << ". Descartamos a metade esquerda." << endl;
+            inicio = meio + 1; // Move o início para a frente do meio
+        } 
+        else {
+            cout << ">> " << arr[meio] << " e maior que " << alvo << ". Descartamos a metade direita." << endl;
+            fim = meio - 1;    // Move o fim para trás do meio
         }
     }
 
-    return -1;
-}
-
-// Busca binária recursiva
-int buscaBinariaRecursiva(const vector<int>& arr, int inicio, int fim, int alvo) {
-    if (inicio > fim) {
-        return -1; // Não encontrado
-    }
-
-    int meio = inicio + (fim - inicio) / 2;
-
-    if (arr[meio] == alvo) {
-        return meio;
-    } else if (arr[meio] < alvo) {
-        return buscaBinariaRecursiva(arr, meio + 1, fim, alvo);
-    } else {
-        return buscaBinariaRecursiva(arr, inicio, meio - 1, alvo);
-    }
+    return -1; // Não encontrado
 }
 
 int main() {
+    // Vetor ordenado de exemplo
     vector<int> vetor = {2, 5, 8, 12, 16, 23, 38, 56, 72, 91};
 
-    cout << "Vetor ordenado:\n[ ";
-    for (size_t i = 0; i < vetor.size(); i++) {
-        cout << vetor[i] << " ";
-    }
-    cout << "]\n\n";
+    cout << "Vetor completo:\n[ ";
+    for (int val : vetor) cout << val << " ";
+    cout << "]\n";
 
-    int valorBusca;
-    cout << "Digite o numero que deseja buscar: ";
-    cin >> valorBusca;
+    int valorBusca = 23;
+    cout << "\nBuscando pelo valor: " << valorBusca << "\n";
 
-    int resultadoIterativo = buscaBinariaIterativa(vetor, valorBusca);
-    int resultadoRecursivo = buscaBinariaRecursiva(vetor, 0, static_cast<int>(vetor.size()) - 1, valorBusca);
-
-    cout << "\n--- Resultados ---" << endl;
-    if (resultadoIterativo != -1) {
-        cout << "[Iterativo] Encontrado no indice: " << resultadoIterativo << endl;
-    } else {
-        cout << "[Iterativo] Nao encontrado." << endl;
-    }
-
-    if (resultadoRecursivo != -1) {
-        cout << "[Recursivo] Encontrado no indice: " << resultadoRecursivo << endl;
-    } else {
-        cout << "[Recursivo] Nao encontrado." << endl;
-    }
+    buscaBinariaIterativa(vetor, valorBusca);
 
     return 0;
 }
