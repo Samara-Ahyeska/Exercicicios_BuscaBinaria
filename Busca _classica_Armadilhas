@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 
+// Busca binária padrão usando loop (retorna o índice ou -1 se não achar)
 int busca_binaria_iterativa(const std::vector<int>& arr, int alvo) {
     int baixo = 0;
     int alto = static_cast<int>(arr.size()) - 1;
@@ -22,6 +23,7 @@ int busca_binaria_iterativa(const std::vector<int>& arr, int alvo) {
     return -1;
 }
 
+// Função auxiliar recursiva para a busca binária
 int busca_binaria_recursiva_aux(const std::vector<int>& arr, int alvo, int baixo, int alto) {
     if (baixo > alto) {
         return -1;
@@ -40,6 +42,7 @@ int busca_binaria_recursiva_aux(const std::vector<int>& arr, int alvo, int baixo
     }
 }
 
+// Wrapper para chamar a busca recursiva de forma limpa
 int busca_binaria_recursiva(const std::vector<int>& arr, int alvo) {
     if (arr.empty()) {
         return -1;
