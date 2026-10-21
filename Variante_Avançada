@@ -1,0 +1,84 @@
+#include <iostream>
+#include <vector>
+#include <utility>
+
+int lower_bound_custom(const std::vector<int>& arr, int alvo) {
+    int baixo = 0;
+    int alto = static_cast<int>(arr.size());
+    int resultado = static_cast<int>(arr.size());
+    
+    while (baixo < alto) {
+        int meio = baixo + (alto - baixo) / 2;
+        
+        if (arr[meio] >= alvo) {
+            resultado = meio;
+            alto = meio;
+        } 
+        else {
+            baixo = meio + 1;
+        }
+    }
+    return resultado;
+}
+
+int upper_bound_custom(const std::vector<int>& arr, int alvo) {
+    int baixo = 0;
+    int alto = static_cast<int>(arr.size());
+    int resultado = static_cast<int>(arr.size());
+    
+    while (baixo < alto) {
+        int meio = baixo + (alto - baixo) / 2;
+        
+        if (arr[meio] > alvo) {
+            resultado = meio;
+            alto = meio;
+        } 
+        else {
+            baixo = meio + 1;
+        }
+    }
+    return resultado;
+}
+
+std::pair<int, int> encontrar_intervalo_ocorrencias(const std::vector<int>& arr, int alvo) {
+    int inicio = lower_bound_custom(arr, alvo);
+    int fim = upper_bound_custom(arr, alvo) - 1;
+    
+    if (inicio <= fim && inicio < static_cast<int>(arr.size()) && arr[inicio] == alvo) {
+        return {inicio, fim};
+    }
+    
+    return {-1, -1};
+}
+
+int main() {
+    std::vector<int> dados_duplicados = {7, 9, 11, 13, 13, 13, 20, 22, 27};
+    
+    std::cout << "Array analisado: ";
+    for (int num : dados_duplicados) {
+        std::cout << num << " ";
+    }
+    std::cout << std::endl << std::endl;
+
+    int alvo1 = 13;
+    std::pair<int, int> intervalo1 = encontrar_intervalo_ocorrencias(dados_duplicados, alvo1);
+    
+    std::cout << "--- Teste 1: Elemento com duplicatas (" << alvo1 << ") ---" << std::endl;
+    std::cout << "Lower Bound (Primeira ocorrencia): Indice " << intervalo1.first << std::endl;
+    std::cout << "Upper Bound - 1 (Ultima ocorrencia): Indice " << intervalo1.second << std::endl;
+    std::cout << "Intervalo completo: [" << intervalo1.first << ", " << intervalo1.second << "]" << std::endl;
+
+    int alvo2 = 11;
+    std::pair<int, int> intervalo2 = encontrar_intervalo_ocorrencias(dados_duplicados, alvo2);
+    
+    std::cout << "\n--- Teste 2: Elemento unico (" << alvo2 << ") ---" << std::endl;
+    std::cout << "Intervalo completo: [" << intervalo2.first << ", " << intervalo2.second << "]" << std::endl;
+
+    int alvo3 = 15;
+    std::pair<int, int> intervalo3 = encontrar_intervalo_ocorrencias(dados_duplicados, alvo3);
+    
+    std::cout << "\n--- Teste 3: Elemento ausente (" << alvo3 << ") ---" << std::endl;
+    std::cout << "Intervalo completo: [" << intervalo3.first << ", " << intervalo3.second << "]" << std::endl;
+
+    return 0;
+}
