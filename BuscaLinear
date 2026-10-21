@@ -1,0 +1,73 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+// Busca binária iterativa
+int buscaBinariaIterativa(const vector<int>& arr, int alvo) {
+    int inicio = 0;
+    int fim = static_cast<int>(arr.size()) - 1;
+
+    while (inicio <= fim) {
+        int meio = inicio + (fim - inicio) / 2; // Evita overflow
+
+        if (arr[meio] == alvo) {
+            return meio;
+        } else if (arr[meio] < alvo) {
+            inicio = meio + 1; // Descarta metade esquerda
+        } else {
+            fim = meio - 1;    // Descarta metade direita
+        }
+    }
+
+    return -1;
+}
+
+// Busca binária recursiva
+int buscaBinariaRecursiva(const vector<int>& arr, int inicio, int fim, int alvo) {
+    if (inicio > fim) {
+        return -1; // Não encontrado
+    }
+
+    int meio = inicio + (fim - inicio) / 2;
+
+    if (arr[meio] == alvo) {
+        return meio;
+    } else if (arr[meio] < alvo) {
+        return buscaBinariaRecursiva(arr, meio + 1, fim, alvo);
+    } else {
+        return buscaBinariaRecursiva(arr, inicio, meio - 1, alvo);
+    }
+}
+
+int main() {
+    vector<int> vetor = {2, 5, 8, 12, 16, 23, 38, 56, 72, 91};
+
+    cout << "Vetor ordenado:\n[ ";
+    for (size_t i = 0; i < vetor.size(); i++) {
+        cout << vetor[i] << " ";
+    }
+    cout << "]\n\n";
+
+    int valorBusca;
+    cout << "Digite o numero que deseja buscar: ";
+    cin >> valorBusca;
+
+    int resultadoIterativo = buscaBinariaIterativa(vetor, valorBusca);
+    int resultadoRecursivo = buscaBinariaRecursiva(vetor, 0, static_cast<int>(vetor.size()) - 1, valorBusca);
+
+    cout << "\n--- Resultados ---" << endl;
+    if (resultadoIterativo != -1) {
+        cout << "[Iterativo] Encontrado no indice: " << resultadoIterativo << endl;
+    } else {
+        cout << "[Iterativo] Nao encontrado." << endl;
+    }
+
+    if (resultadoRecursivo != -1) {
+        cout << "[Recursivo] Encontrado no indice: " << resultadoRecursivo << endl;
+    } else {
+        cout << "[Recursivo] Nao encontrado." << endl;
+    }
+
+    return 0;
+}
