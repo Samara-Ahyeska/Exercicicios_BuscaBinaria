@@ -2,6 +2,7 @@
 #include <vector>
 #include <utility>
 
+// Retorna o índice da primeira posição com valor >= alvo
 int lower_bound_custom(const std::vector<int>& arr, int alvo) {
     int baixo = 0;
     int alto = static_cast<int>(arr.size());
@@ -21,6 +22,7 @@ int lower_bound_custom(const std::vector<int>& arr, int alvo) {
     return resultado;
 }
 
+// Retorna o índice da primeira posição com valor > alvo
 int upper_bound_custom(const std::vector<int>& arr, int alvo) {
     int baixo = 0;
     int alto = static_cast<int>(arr.size());
@@ -40,6 +42,7 @@ int upper_bound_custom(const std::vector<int>& arr, int alvo) {
     return resultado;
 }
 
+// Devolve o intervalo [início, fim] das ocorrências do alvo (ou {-1, -1} se não achar)
 std::pair<int, int> encontrar_intervalo_ocorrencias(const std::vector<int>& arr, int alvo) {
     int inicio = lower_bound_custom(arr, alvo);
     int fim = upper_bound_custom(arr, alvo) - 1;
