@@ -1,0 +1,70 @@
+#include <iostream>
+#include <vector>
+
+int busca_binaria_iterativa(const std::vector<int>& arr, int alvo) {
+    int baixo = 0;
+    int alto = static_cast<int>(arr.size()) - 1;
+
+    while (baixo <= alto) {
+        int meio = baixo + (alto - baixo) / 2;
+
+        if (arr[meio] == alvo) {
+            return meio;
+        }
+
+        if (arr[meio] < alvo) {
+            baixo = meio + 1;
+        } else {
+            alto = meio - 1;
+        }
+    }
+
+    return -1;
+}
+
+int busca_binaria_recursiva_aux(const std::vector<int>& arr, int alvo, int baixo, int alto) {
+    if (baixo > alto) {
+        return -1;
+    }
+
+    int meio = baixo + (alto - baixo) / 2;
+
+    if (arr[meio] == alvo) {
+        return meio;
+    }
+
+    if (arr[meio] < alvo) {
+        return busca_binaria_recursiva_aux(arr, alvo, meio + 1, alto);
+    } else {
+        return busca_binaria_recursiva_aux(arr, alvo, baixo, meio - 1);
+    }
+}
+
+int busca_binaria_recursiva(const std::vector<int>& arr, int alvo) {
+    if (arr.empty()) {
+        return -1;
+    }
+    return busca_binaria_recursiva_aux(arr, alvo, 0, static_cast<int>(arr.size()) - 1);
+}
+
+int main() {
+    std::vector<int> dados = {7, 9, 11, 12, 24, 32, 38, 66, 72, 91};
+
+    int alvo1 = 38;
+    std::cout << "--- Teste 1: Elemento Presente (" << alvo1 << ") ---" << std::endl;
+    std::cout << "Resultado Iterativo: Indice " << busca_binaria_iterativa(dados, alvo1) << std::endl;
+    std::cout << "Resultado Recursivo: Indice " << busca_binaria_recursiva(dados, alvo1) << std::endl;
+
+    int alvo2 = 46;
+    std::cout << "\n--- Teste 2: Elemento Ausente (" << alvo2 << ") ---" << std::endl;
+    std::cout << "Resultado Iterativo: " << busca_binaria_iterativa(dados, alvo2) << std::endl;
+    std::cout << "Resultado Recursivo: " << busca_binaria_recursiva(dados, alvo2) << std::endl;
+
+    int alvo_inicio = 12;
+    int alvo_fim = 91;
+    std::cout << "\n--- Teste 3: Extremidades ---" << std::endl;
+    std::cout << "Inicio (7): " << busca_binaria_iterativa(dados, alvo_inicio) << std::endl;
+    std::cout << "Fim (91):    " << busca_binaria_iterativa(dados, alvo_fim) << std::endl;
+
+    return 0;
+}
